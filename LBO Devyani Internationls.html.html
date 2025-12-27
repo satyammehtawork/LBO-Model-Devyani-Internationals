@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devyani International LBO Model</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #667eea;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .slide h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-card p {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        th:first-child {
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: right;
+        }
+
+        td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            font-weight: 700;
+        }
+
+        .narrative {
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+            line-height: 1.8;
+        }
+
+        .key-point {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .key-point strong {
+            color: #764ba2;
+        }
+
+        .formula {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 4px solid #764ba2;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .bullet-list li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bullet-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .positive {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .negative {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .chart-placeholder {
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            height: 300px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border: 2px dashed #667eea;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Devyani International Limited</h1>
+            <p>5-Year Leveraged Buyout Model</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Private Equity Investment Analysis | FY2024-FY2028</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn active" onclick="showSlide(0)">Overview</button>
+            <button class="nav-btn" onclick="showSlide(1)">Investment Rationale</button>
+            <button class="nav-btn" onclick="showSlide(2)">Operating Drivers</button>
+            <button class="nav-btn" onclick="showSlide(3)">Financial Projections</button>
+            <button class="nav-btn" onclick="showSlide(4)">Cash Flow</button>
+            <button class="nav-btn" onclick="showSlide(5)">Debt Structure</button>
+            <button class="nav-btn" onclick="showSlide(6)">Exit & Returns</button>
+            <button class="nav-btn" onclick="showSlide(7)">Value Creation</button>
+        </div>
+
+        <!-- Slide 1: Overview -->
+        <div class="slide active">
+            <h2>Business Overview</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Company</h4>
+                    <p>Devyani International</p>
+                </div>
+                <div class="info-card">
+                    <h4>Industry</h4>
+                    <p>Quick Service Restaurants</p>
+                </div>
+                <div class="info-card">
+                    <h4>Total Stores (FY24)</h4>
+                    <p>1,692</p>
+                </div>
+                <div class="info-card">
+                    <h4>Geography</h4>
+                    <p>India, Thailand, Nigeria</p>
+                </div>
+            </div>
+
+            <h3>Company Description</h3>
+            <div class="narrative">
+                <p>Devyani International Limited (DIL) is India's largest franchisee for Yum Brands, operating KFC, Pizza Hut, and Costa Coffee stores. Established in 1991, the company has grown to become one of the country's premier quick-service restaurant operators.</p>
+                
+                <div class="key-point">
+                    <strong>Key Brands:</strong>
+                    <ul class="bullet-list">
+                        <li>KFC: 941 outlets in India (FY24)</li>
+                        <li>Pizza Hut: 572 outlets</li>
+                        <li>Costa Coffee: 150+ outlets</li>
+                        <li>Vaango & other proprietary brands</li>
+                    </ul>
+                </div>
+
+                <div class="key-point">
+                    <strong>Market Position:</strong>
+                    <ul class="bullet-list">
+                        <li>Largest Yum Brands franchisee in India</li>
+                        <li>Expanding aggressively into Tier 2 & 3 cities</li>
+                        <li>International presence in Thailand (288 KFC stores)</li>
+                        <li>Part of RJ Corp conglomerate (61.4% promoter holding)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Key Financial Metrics (FY2024)</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Revenue</h4>
+                    <p>₹35,263 Mn</p>
+                </div>
+                <div class="info-card">
+                    <h4>EBITDA</h4>
+                    <p>₹6,500 Mn</p>
+                </div>
+                <div class="info-card">
+                    <h4>EBITDA Margin</h4>
+                    <p>18.4%</p>
+                </div>
+                <div class="info-card">
+                    <h4>Store Growth</h4>
+                    <p>528 new stores</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Investment Rationale -->
+        <div class="slide">
+            <h2>Why Devyani is Suitable for an LBO</h2>
+
+            <div class="narrative">
+                <h3 style="color: #667eea; margin-top: 0;">🎯 Strong LBO Characteristics</h3>
+                
+                <div class="key-point">
+                    <strong>1. Predictable & Recurring Cash Flows</strong>
+                    <p>QSR business model generates consistent daily cash flow from thousands of customer transactions across 1,692+ stores. Food service is recession-resistant with steady demand.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>2. Asset-Light Business Model</strong>
+                    <p>Most stores are leased rather than owned, reducing capital intensity. Franchise model with Yum Brands provides proven systems and brand equity. Low working capital requirements (negative cash conversion cycle of -35 days).</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>3. Strong Unit Economics</strong>
+                    <p>KFC payback period: 2-3 years. Pizza Hut: 5-6 years. Costa Coffee stores showing improving profitability. Average Daily Sales (ADS) of ₹93,000-127,000 per store.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>4. Scalability & Growth Potential</strong>
+                    <p>India's QSR market projected to grow from $25B (2024) to $39B (2029) at 8.7% CAGR. Massive runway for expansion in underserved Tier 2/3 cities. Target of 2,000+ stores achievable within current fiscal.</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>5. Operational Improvement Opportunities</strong>
+                    <p>Margin expansion through economies of scale, supply chain optimization, digital ordering/delivery channel enhancement, food court and institutional business development, and menu innovation (recent launches showing traction).</p>
+                </div>
+
+                <div class="key-point">
+                    <strong>6. Deleveraging Capability</strong>
+                    <p>Current debt minimal (D/E of 0.86), providing ample capacity for leveraged buyout. Operating cash flow of ₹5,925 Mn (FY24) supports debt servicing. Growing EBITDA base provides multiple expansion opportunity at exit.</p>
+                </div>
+            </div>
+
+            <h3>Market Dynamics</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>India QSR Market Size</h4>
+                    <p>$25B (2024)</p>
+                </div>
+                <div class="info-card">
+                    <h4>Projected CAGR</h4>
+                    <p>8.7%</p>
+                </div>
+                <div class="info-card">
+                    <h4>Target Market</h4>
+                    <p>18-34 age group</p>
+                </div>
+                <div class="info-card">
+                    <h4>Competitive Moat</h4>
+                    <p>Strong franchise</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Operating Drivers -->
+        <div class="slide">
+            <h2>Key Operating Drivers</h2>
+
+            <h3>Store Count Trajectory</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Opening Store Count</td>
+                            <td>1,164</td>
+                            <td>1,692</td>
+                            <td>1,942</td>
+                            <td>2,192</td>
+                            <td>2,442</td>
+                        </tr>
+                        <tr>
+                            <td>New Store Additions</td>
+                            <td>528</td>
+                            <td>250</td>
+                            <td>250</td>
+                            <td>250</td>
+                            <td>250</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Closing Store Count</td>
+                            <td>1,692</td>
+                            <td>1,942</td>
+                            <td>2,192</td>
+                            <td>2,442</td>
+                            <td>2,692</td>
+                        </tr>
+                        <tr>
+                            <td>YoY Growth %</td>
+                            <td>45.4%</td>
+                            <td>14.8%</td>
+                            <td>12.9%</td>
+                            <td>11.4%</td>
+                            <td>10.2%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Revenue Per Store & Same-Store Sales Growth</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Avg Revenue/Store (₹Mn)</td>
+                            <td>20.8</td>
+                            <td>22.0</td>
+                            <td>23.3</td>
+                            <td>24.7</td>
+                            <td>26.2</td>
+                        </tr>
+                        <tr>
+                            <td>YoY Growth %</td>
+                            <td>-</td>
+                            <td>5.5%</td>
+                            <td>6.0%</td>
+                            <td>6.0%</td>
+                            <td>6.0%</td>
+                        </tr>
+                        <tr>
+                            <td>Same-Store Sales Growth</td>
+                            <td>(7.0%)</td>
+                            <td>2.0%</td>
+                            <td>4.0%</td>
+                            <td>5.0%</td>
+                            <td>5.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Margin Profile</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Margin Type</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gross Margin</td>
+                            <td>70.0%</td>
+                            <td>69.5%</td>
+                            <td>69.8%</td>
+                            <td>70.0%</td>
+                            <td>70.2%</td>
+                        </tr>
+                        <tr>
+                            <td>EBITDA Margin</td>
+                            <td>18.4%</td>
+                            <td>16.0%</td>
+                            <td>17.0%</td>
+                            <td>18.0%</td>
+                            <td>19.0%</td>
+                        </tr>
+                        <tr>
+                            <td>Operating Profit Margin</td>
+                            <td>6.9%</td>
+                            <td>8.5%</td>
+                            <td>9.5%</td>
+                            <td>10.5%</td>
+                            <td>11.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Capex Requirements</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capex Type</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>New Store Capex (₹Mn)</td>
+                            <td>3,168</td>
+                            <td>1,500</td>
+                            <td>1,625</td>
+                            <td>1,750</td>
+                            <td>1,875</td>
+                        </tr>
+                        <tr>
+                            <td>Maintenance Capex (₹Mn)</td>
+                            <td>716</td>
+                            <td>500</td>
+                            <td>550</td>
+                            <td>600</td>
+                            <td>650</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Total Capex (₹Mn)</td>
+                            <td>3,884</td>
+                            <td>2,000</td>
+                            <td>2,175</td>
+                            <td>2,350</td>
+                            <td>2,525</td>
+                        </tr>
+                        <tr>
+                            <td>Capex as % of Revenue</td>
+                            <td>11.0%</td>
+                            <td>4.7%</td>
+                            <td>4.3%</td>
+                            <td>3.9%</td>
+                            <td>3.6%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 4: Financial Projections -->
+        <div class="slide">
+            <h2>5-Year Financial Projections</h2>
+
+            <h3>Income Statement (₹ Million)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Line Item</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight">
+                            <td>Total Revenue</td>
+                            <td>35,263</td>
+                            <td>42,700</td>
+                            <td>50,960</td>
+                            <td>60,300</td>
+                            <td>70,550</td>
+                        </tr>
+                        <tr>
+                            <td>YoY Growth %</td>
+                            <td>18.6%</td>
+                            <td>21.1%</td>
+                            <td>19.3%</td>
+                            <td>18.3%</td>
+                            <td>17.0%</td>
+                        </tr>
+                        <tr>
+                            <td>Cost of Materials</td>
+                            <td>(10,566)</td>
+                            <td>(13,024)</td>
+                            <td>(15,390)</td>
+                            <td>(18,090)</td>
+                            <td>(21,024)</td>
+                        </tr>
+                        <tr>
+                            <td>Gross Profit</td>
+                            <td>24,697</td>
+                            <td>29,676</td>
+                            <td>35,570</td>
+                            <td>42,210</td>
+                            <td>49,526</td>
+                        </tr>
+                        <tr>
+                            <td>Employee Costs</td>
+                            <td>(4,950)</td>
+                            <td>(5,978)</td>
+                            <td>(7,134)</td>
+                            <td>(8,442)</td>
+                            <td>(9,877)</td>
+                        </tr>
+                        <tr>
+                            <td>Rent & Other Expenses</td>
+                            <td>(13,240)</td>
+                            <td>(17,028)</td>
+                            <td>(19,776)</td>
+                            <td>(22,908)</td>
+                            <td>(26,245)</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>EBITDA</td>
+                            <td>6,507</td>
+                            <td>6,670</td>
+                            <td>8,660</td>
+                            <td>10,860</td>
+                            <td>13,404</td>
+                        </tr>
+                        <tr>
+                            <td>EBITDA Margin %</td>
+                            <td>18.4%</td>
+                            <td>15.6%</td>
+                            <td>17.0%</td>
+                            <td>18.0%</td>
+                            <td>19.0%</td>
+                        </tr>
+                        <tr>
+                            <td>Depreciation</td>
+                            <td>(1,688)</td>
+                            <td>(2,000)</td>
+                            <td>(2,300)</td>
+                            <td>(2,600)</td>
+                            <td>(2,900)</td>
+                        </tr>
+                        <tr>
+                            <td>EBIT</td>
+                            <td>4,819</td>
+                            <td>4,670</td>
+                            <td>6,360</td>
+                            <td>8,260</td>
+                            <td>10,504</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Working Capital Movements (₹ Million)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Inventory</td>
+                            <td>1,531</td>
+                            <td>1,854</td>
+                            <td>2,213</td>
+                            <td>2,618</td>
+                            <td>3,063</td>
+                        </tr>
+                        <tr>
+                            <td>Accounts Receivable</td>
+                            <td>343</td>
+                            <td>415</td>
+                            <td>495</td>
+                            <td>586</td>
+                            <td>686</td>
+                        </tr>
+                        <tr>
+                            <td>Accounts Payable</td>
+                            <td>(2,869)</td>
+                            <td>(3,473)</td>
+                            <td>(4,144)</td>
+                            <td>(4,904)</td>
+                            <td>(5,738)</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Net Working Capital</td>
+                            <td>(995)</td>
+                            <td>(1,204)</td>
+                            <td>(1,436)</td>
+                            <td>(1,700)</td>
+                            <td>(1,989)</td>
+                        </tr>
+                        <tr>
+                            <td>Change in NWC</td>
+                            <td>-</td>
+                            <td>(209)</td>
+                            <td>(232)</td>
+                            <td>(264)</td>
+                            <td>(289)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="narrative">
+                <strong>Key Assumptions:</strong>
+                <ul class="bullet-list">
+                    <li>Revenue growth driven by 250 new stores annually + same-store sales improvement</li>
+                    <li>EBITDA margin recovery from FY24 lows (operational challenges) to 19% by FY28</li>
+                    <li>Negative working capital due to QSR business model (cash upfront, pay suppliers later)</li>
+                    <li>Capex normalizing to ₹2.0-2.5Bn annually (vs ₹3.9Bn in FY24 expansion year)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 5: Cash Flow -->
+        <div class="slide">
+            <h2>Free Cash Flow Analysis</h2>
+
+            <h3>Cash Flow Build-Up (₹ Million)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>FY2024A</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight">
+                            <td>EBITDA</td>
+                            <td>6,507</td>
+                            <td>6,670</td>
+                            <td>8,660</td>
+                            <td>10,860</td>
+                            <td>13,404</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Taxes @ 25%</td>
+                            <td>(1,205)</td>
+                            <td>(1,168)</td>
+                            <td>(1,590)</td>
+                            <td>(2,065)</td>
+                            <td>(2,626)</td>
+                        </tr>
+                        <tr>
+                            <td>Add: Depreciation</td>
+                            <td>1,688</td>
+                            <td>2,000</td>
+                            <td>2,300</td>
+                            <td>2,600</td>
+                            <td>2,900</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Capex</td>
+                            <td>(3,884)</td>
+                            <td>(2,000)</td>
+                            <td>(2,175)</td>
+                            <td>(2,350)</td>
+                            <td>(2,525)</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Change in NWC</td>
+                            <td>-</td>
+                            <td>(209)</td>
+                            <td>(232)</td>
+                            <td>(264)</td>
+                            <td>(289)</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Unlevered Free Cash Flow</td>
+                            <td>3,106</td>
+                            <td>5,293</td>
+                            <td>6,963</td>
+                            <td>8,781</td>
+                            <td>10,864</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Free Cash Flow Conversion</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>FCF Margin (FY25)</h4>
+                    <p>12.4%</p>
+                </div>
+                <div class="info-card">
+                    <h4>FCF Margin (FY28)</h4>
+                    <p>15.4%</p>
+                </div>
+                <div class="info-card">
+                    <h4>Cumulative FCF (5Y)</h4>
+                    <p>₹35,007 Mn</p>
+                </div>
+                <div class="info-card">
+                    <h4>Avg Annual FCF</h4>
+                    <p>₹7,001 Mn</p>
+                </div>
+            </div>
+
+            <div class="formula">
+                <strong>Free Cash Flow Formula:</strong><br>
+                FCF = EBITDA - Taxes - Capex - Δ Working Capital + Depreciation<br><br>
+                <em>Note: This is unlevered FCF (before debt payments), representing cash available to all investors</em>
+            </div>
+
+            <div class="narrative">
+                <h3 style="margin-top: 0;">Cash Flow Insights</h3>
+                <div class="key-point">
+                    <strong>FY2024 Performance:</strong> Lower FCF due to aggressive expansion (528 stores added). High capex of ₹3,884 Mn consumed most of operating cash flow. This is typical for high-growth phase.
+                </div>
+                <div class="key-point">
+                    <strong>FY2025-28 Normalization:</strong> Capex normalizes to ₹2.0-2.5Bn annually as store additions moderate to 250/year. FCF generation improves significantly from ₹5.3Bn to ₹10.9Bn. Strong cash generation supports debt paydown.
+                </div>
+                <div class="key-point">
+                    <strong>Working Capital Benefit:</strong> Negative working capital in QSR business means growth actually releases cash. Customer payments received immediately, suppliers paid in 30+ days. This is a significant advantage for the LBO structure.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Debt Structure -->
+        <div class="slide">
+            <h2>LBO Capital Structure & Debt Schedule</h2>
+
+            <h3>Transaction Structure (Entry - FY2024)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>₹ Million</th>
+                            <th>% of Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Enterprise Value (Entry)</td>
+                            <td>130,140</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Entry EBITDA Multiple</td>
+                            <td>20.0x</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Existing Cash</td>
+                            <td>(81)</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Add: Existing Debt</td>
+                            <td>774</td>
+                            <td>-</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Equity Value</td>
+                            <td>130,833</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Sources of Funds</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Senior Debt (5.5x EBITDA)</td>
+                            <td>35,789</td>
+                            <td>27.4%</td>
+                        </tr>
+                        <tr>
+                            <td>Subordinated Debt (1.5x EBITDA)</td>
+                            <td>9,761</td>
+                            <td>7.5%</td>
+                        </tr>
+                        <tr>
+                            <td>Sponsor Equity</td>
+                            <td>85,283</td>
+                            <td>65.1%</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Total Sources</td>
+                            <td>130,833</td>
+                            <td>100.0%</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Total Debt / EBITDA</td>
+                            <td>7.0x</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Debt / Equity</td>
+                            <td>0.53x</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Debt Repayment Schedule (₹ Million)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>FY2024</th>
+                            <th>FY2025E</th>
+                            <th>FY2026E</th>
+                            <th>FY2027E</th>
+                            <th>FY2028E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Opening Debt Balance</td>
+                            <td>-</td>
+                            <td>45,550</td>
+                            <td>42,550</td>
+                            <td>37,800</td>
+                            <td>31,500</td>
+                        </tr>
+                        <tr>
+                            <td>New Debt Raised</td>
+                            <td>45,550</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Interest @ 9.5%</td>
+                            <td>-</td>
+                            <td>(4,328)</td>
+                            <td>(4,042)</td>
+                            <td>(3,591)</td>
+                            <td>(2,993)</td>
+                        </tr>
+                        <tr>
+                            <td>Mandatory Amortization</td>
+                            <td>-</td>
+                            <td>(3,000)</td>
+                            <td>(3,000)</td>
+                            <td>(3,000)</td>
+                            <td>(3,000)</td>
+                        </tr>
+                        <tr>
+                            <td>Cash Sweep (50% of Excess FCF)</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>(1,750)</td>
+                            <td>(3,300)</td>
+                            <td>(6,300)</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Closing Debt Balance</td>
+                            <td>45,550</td>
+                            <td>42,550</td>
+                            <td>37,800</td>
+                            <td>31,500</td>
+                            <td>22,200</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Net Debt / EBITDA</td>
+                            <td>7.0x</td>
+                            <td>6.4x</td>
+                            <td>4.4x</td>
+                            <td>2.9x</td>
+                            <td>1.7x</td>
+                        </tr>
+                        <tr>
+                            <td>Interest Coverage (EBITDA/Int)</td>
+                            <td>-</td>
+                            <td>1.5x</td>
+                            <td>2.1x</td>
+                            <td>3.0x</td>
+                            <td>4.5x</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="narrative">
+                <h3 style="margin-top: 0;">Debt Strategy</h3>
+                <div class="key-point">
+                    <strong>Prudent Leverage:</strong> Entry leverage of 7.0x EBITDA is moderate for QSR sector given predictable cash flows. Mix of senior (75%) and subordinated debt (25%) provides flexibility.
+                </div>
+                <div class="key-point">
+                    <strong>Rapid Deleveraging:</strong> Debt/EBITDA improves from 7.0x to 1.7x over 5 years. Total debt reduction of ₹23.4Bn (51% paydown). Interest coverage strengthens from 1.5x to 4.5x, reducing financial risk.
+                </div>
+                <div class="key-point">
+                    <strong>Cash Sweep Mechanism:</strong> 50% of excess FCF (after mandatory amortization) used for voluntary prepayment. Accelerates deleveraging in later years as FCF grows. Maintains flexibility for strategic investments.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Exit & Returns -->
+        <div class="slide">
+            <h2>Exit Valuation & Returns Analysis</h2>
+
+            <h3>Exit Assumptions (FY2028)</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Exit Year</h4>
+                    <p>FY2028</p>
+                </div>
+                <div class="info-card">
+                    <h4>Exit EBITDA</h4>
+                    <p>₹13,404 Mn</p>
+                </div>
+                <div class="info-card">
+                    <h4>Exit Multiple</h4>
+                    <p>22.0x</p>
+                </div>
+                <div class="info-card">
+                    <h4>Holding Period</h4>
+                    <p>5 Years</p>
+                </div>
+            </div>
+
+            <h3>Exit Value Calculation (₹ Million)</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Exit EBITDA (FY2028)</td>
+                            <td>13,404</td>
+                        </tr>
+                        <tr>
+                            <td>Exit EV Multiple</td>
+                            <td>22.0x</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Enterprise Value at Exit</td>
+                            <td>294,888</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Net Debt at Exit</td>
+                            <td>(22,200)</td>
+                        </tr>
+                        <tr>
+                            <td>Add: Cash at Exit</td>
+                            <td>2,500</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Equity Value at Exit</td>
+                            <td>275,188</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Returns to Sponsor</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Initial Equity Investment</td>
+                            <td>₹85,283 Mn</td>
+                        </tr>
+                        <tr>
+                            <td>Exit Equity Value</td>
+                            <td>₹275,188 Mn</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Equity Value Creation</td>
+                            <td>₹189,905 Mn</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Multiple of Invested Capital (MOIC)</strong></td>
+                            <td><span class="positive">3.23x</span></td>
+                        </tr>
+                        <tr class="highlight">
+                            <td><strong>Internal Rate of Return (IRR)</strong></td>
+                            <td><span class="positive">26.4%</span></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Absolute Profit</td>
+                            <td><span class="positive">+222.7%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="formula">
+                <strong>Key Formulas:</strong><br>
+                MOIC = Exit Equity Value / Initial Equity Investment<br>
+                IRR = [(Exit Value / Entry Value)^(1/Years)] - 1<br><br>
+                <em>Target PE Returns: Typically seek 20-25% IRR and 2.5-3.0x MOIC</em>
+            </div>
+
+            <h3>Sensitivity Analysis - IRR %</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Exit Multiple →<br>Exit EBITDA ↓</th>
+                            <th>19.0x</th>
+                            <th>20.0x</th>
+                            <th>21.0x</th>
+                            <th>22.0x</th>
+                            <th>23.0x</th>
+                            <th>24.0x</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>₹12,000 Mn (-10%)</td>
+                            <td>18.2%</td>
+                            <td>19.8%</td>
+                            <td>21.3%</td>
+                            <td>22.7%</td>
+                            <td>24.1%</td>
+                            <td>25.4%</td>
+                        </tr>
+                        <tr>
+                            <td>₹12,700 Mn (-5%)</td>
+                            <td>20.1%</td>
+                            <td>21.7%</td>
+                            <td>23.2%</td>
+                            <td>24.7%</td>
+                            <td>26.1%</td>
+                            <td>27.4%</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>₹13,404 Mn (Base)</td>
+                            <td>22.0%</td>
+                            <td>23.6%</td>
+                            <td>25.2%</td>
+                            <td>26.4%</td>
+                            <td>28.0%</td>
+                            <td>29.4%</td>
+                        </tr>
+                        <tr>
+                            <td>₹14,100 Mn (+5%)</td>
+                            <td>23.9%</td>
+                            <td>25.5%</td>
+                            <td>27.0%</td>
+                            <td>28.4%</td>
+                            <td>29.8%</td>
+                            <td>31.2%</td>
+                        </tr>
+                        <tr>
+                            <td>₹14,800 Mn (+10%)</td>
+                            <td>25.7%</td>
+                            <td>27.4%</td>
+                            <td>28.9%</td>
+                            <td>30.4%</td>
+                            <td>31.8%</td>
+                            <td>33.1%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="narrative">
+                <strong>Exit Rationale:</strong>
+                <ul class="bullet-list">
+                    <li>Exit multiple of 22x represents 10% premium to entry (20x) - justified by improved scale and margins</li>
+                    <li>Company will be larger (2,692 stores vs 1,692), more profitable (19% vs 18% EBITDA margin)</li>
+                    <li>Significant derisking achieved through debt paydown (7.0x to 1.7x leverage)</li>
+                    <li>Even at 19x exit multiple, IRR exceeds 20% hurdle rate</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Value Creation -->
+        <div class="slide">
+            <h2>Value Creation Bridge</h2>
+
+            <h3>How Value is Created in this LBO</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Value Driver</th>
+                            <th>Entry</th>
+                            <th>Exit</th>
+                            <th>Value Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Initial Equity Investment</td>
+                            <td>₹85,283 Mn</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>1. EBITDA Growth (Operations)</td>
+                            <td>₹6,507 Mn</td>
+                            <td>₹13,404 Mn</td>
+                            <td><span class="positive">+₹96,540 Mn</span></td>
+                        </tr>
+                        <tr>
+                            <td>2. Multiple Expansion</td>
+                            <td>20.0x</td>
+                            <td>22.0x</td>
+                            <td><span class="positive">+₹26,808 Mn</span></td>
+                        </tr>
+                        <tr>
+                            <td>3. Debt Paydown (Deleveraging)</td>
+                            <td>₹45,550 Mn</td>
+                            <td>₹22,200 Mn</td>
+                            <td><span class="positive">+₹23,350 Mn</span></td>
+                        </tr>
+                        <tr>
+                            <td>4. Cash Accumulation</td>
+                            <td>₹81 Mn</td>
+                            <td>₹2,500 Mn</td>
+                            <td><span class="positive">+₹2,419 Mn</span></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Exit Equity Value</td>
+                            <td>-</td>
+                            <td>₹275,188 Mn</td>
+                            <td><span class="positive">+₹189,905 Mn</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Value Creation Breakdown</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>EBITDA Growth</h4>
+                    <p class="positive">64.2%</p>
+                </div>
+                <div class="info-card">
+                    <h4>Multiple Expansion</h4>
+                    <p class="positive">17.8%</p>
+                </div>
+                <div class="info-card">
+                    <h4>Deleveraging</h4>
+                    <p class="positive">15.5%</p>
+                </div>
+                <div class="info-card">
+                    <h4>Cash Build</h4>
+                    <p class="positive">1.6%</p>
+                </div>
+            </div>
+
+            <div class="narrative">
+                <h3 style="margin-top: 0;">📈 Value Creation Narrative</h3>
+
+                <div class="key-point">
+                    <strong>1. Operational Excellence (64% of Value)</strong><br>
+                    The primary value driver is organic EBITDA growth from ₹6.5Bn to ₹13.4Bn (106% increase). This is achieved through: <strong>Store Expansion</strong> - growing from 1,692 to 2,692 stores (59% growth), targeting underserved markets with proven unit economics; <strong>Same-Store Sales Growth</strong> - recovery from negative SSSG in FY24 to steady 4-5% growth through menu innovation, digital ordering, and improved customer experience; <strong>Margin Improvement</strong> - EBITDA margin expansion from 18.4% to 19.0% via economies of scale in procurement, operational leverage from larger store base, and supply chain optimization.
+                </div>
+
+                <div class="key-point">
+                    <strong>2. Multiple Expansion (18% of Value)</strong><br>
+                    Exit multiple increases from 20x to 22x EBITDA based on: <strong>Quality Improvement</strong> - company becomes more valuable with 2x EBITDA, 60% more stores, and significantly derisked (leverage drops from 7.0x to 1.7x); <strong>Market Position</strong> - strengthened market leadership in fragmented QSR sector; <strong>Growth Trajectory</strong> - demonstrated sustainable growth model with proven economics.
+                </div>
+
+                <div class="key-point">
+                    <strong>3. Financial Engineering (16% of Value)</strong><br>
+                    Debt paydown of ₹23.4Bn converts what was owed to lenders into equity value for sponsors. This is achieved through: strong and predictable cash flow generation of ₹35Bn over 5 years, disciplined capital allocation with mandatory amortization plus cash sweeps, and negative working capital providing additional financing benefit.
+                </div>
+
+                <div class="key-point">
+                    <strong>4. Capital Structure Optimization</strong><br>
+                    The moderate leverage (7.0x entry) is appropriate given: predictable cash flows from consumer staple-like business, asset-light model reducing business risk, and negative working capital improving cash conversion. Deleveraging improves returns while reducing risk throughout holding period.
+                </div>
+            </div>
+
+            <h3>Key Investment Highlights</h3>
+            <div class="narrative">
+                <ul class="bullet-list">
+                    <li><strong>Market Leader:</strong> India's largest Yum franchisee with strong brand portfolio (KFC, Pizza Hut, Costa)</li>
+                    <li><strong>Scalable Platform:</strong> Proven ability to add 250-500+ stores annually with positive unit economics</li>
+                    <li><strong>Secular Growth:</strong> Beneficiary of India's rising middle class and premiumization trend</li>
+                    <li><strong>Cash Generative:</strong> Negative working capital and asset-light model drives strong FCF conversion</li>
+                    <li><strong>Operational Upside:</strong> Multiple levers for margin expansion and efficiency gains</li>
+                    <li><strong>Conservative Leverage:</strong> Prudent debt levels with clear path to sub-2x leverage by exit</li>
+                    <li><strong>Attractive Returns:</strong> 26.4% IRR and 3.2x MOIC exceed typical PE hurdle rates</li>
+                </ul>
+            </div>
+
+            <h3>Key Risks to Monitor</h3>
+            <div class="narrative">
+                <ul class="bullet-list">
+                    <li>Same-store sales underperformance due to macro weakness or competition</li>
+                    <li>Real estate availability and costs in key expansion markets</li>
+                    <li>Food inflation impacting margins if not passed to customers</li>
+                    <li>Regulatory changes affecting QSR operations or franchise relationships</li>
+                    <li>Exit multiple compression if public market valuations decline</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>This LBO model is for educational purposes and represents a conceptual analysis based on publicly available data.</p>
+            <p>Created by Satyam Mehta | Private Equity Investment Analysis</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const navBtns = document.querySelectorAll('.nav-btn');
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            navBtns[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            navBtns[currentSlide].classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        });
+    </script>
+</body>
+</html>
